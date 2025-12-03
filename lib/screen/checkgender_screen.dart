@@ -1,7 +1,6 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'login_screen.dart';
 
 
@@ -34,7 +33,6 @@ class _CheckGenderScreenState extends State<CheckGenderScreen> {
             Positioned(top:0, left: 0, right: 0,
               child: Image.asset("assets/image/boy.png",height:845,fit: BoxFit.contain,),
             ),
-
             Positioned(
               bottom: 13,
               left: 13,

@@ -1,16 +1,17 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import '../models/ProductModel.dart';
 import '../models/category_model.dart';
 import '../models/product_color_model.dart';
 import '../models/product_highlight_model.dart';
 import '../models/product_image_model.dart';
+import '../models/product_model.dart';
 import '../models/product_offer_model.dart';
 import '../models/product_review_model.dart';
 import '../models/product_size_model.dart';
+import '../models/search_models/recent_search_model.dart';
 
 class ProductApi {
-  static const String url = "http://10.21.98.64:3000";
+  static const String url = "https://shop-sathi-api.onrender.com";
 
   static Future<List<ProductModel>?> fetchProducts()async{
       var response=await http.get(Uri.parse("$url/home-products"));
@@ -101,6 +102,73 @@ class ProductApi {
     if (res.statusCode == 200) {
       var data = jsonDecode(res.body);
       return ProductModel.fromJson(data);
+    }
+    return null;
+  }
+
+  // static Future<List<ProductModel>> searchProducts(String query) async {
+  //   final response = await http.get(Uri.parse("$url/search?q=${Uri.encodeComponent(query)}"));
+  //   if (response.statusCode == 200) {
+  //     final List data = jsonDecode(response.body);
+  //
+  //     return data.map((item) => ProductModel.fromJson(item)).toList();
+  //   } else {
+  //     return [];
+  //   }
+  // }
+  static Future<List<ProductModel>> searchProducts(String query) async {
+    final response = await http.get(
+      Uri.parse("$url/search?q=${Uri.encodeComponent(query)}"),
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> jsonData = jsonDecode(response.body);
+
+      final List products = jsonData['products'];
+
+      return products.map((item) => ProductModel.fromJson(item)).toList();
+    } else {
+      return [];
+    }
+  }
+
+  static Future<bool> saveRecentSearch(int userId, String keyword) async {
+    final res = await http.post(
+      Uri.parse("$url/recent-search"),
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode({"user_id": userId, "keyword": keyword}),
+    );
+
+    return res.statusCode == 200;
+  }
+
+  static Future<List<RecentSearchModel>> getRecentSearches(int userId) async {
+    final res = await http.get(Uri.parse("$url/recent-searches/$userId"));
+    if (res.statusCode == 200) {
+      final data = jsonDecode(res.body);
+      List list = data["searches"];
+      return list.map((e) => RecentSearchModel.fromJson(e)).toList();
+    }
+
+    return [];
+  }
+
+  static Future<List<RecentSearchModel>> getPopularSearches() async {
+    final res = await http.get(Uri.parse("$url/popular-searches"));
+
+    if (res.statusCode == 200) {
+      final data = jsonDecode(res.body);
+      List list = data["popular"];
+      return list.map((e) => RecentSearchModel.fromJson(e)).toList();
+    }
+
+    return [];
+  }
+  static Future<String?> fetchProductDescription(int id) async {
+    final res = await http.get(Uri.parse("$url/api/products/$id/description"));
+    if (res.statusCode == 200) {
+      final Map<String, dynamic> json = jsonDecode(res.body);
+      return json['description'] as String?;
     }
     return null;
   }

@@ -1,5 +1,5 @@
 
-class ProductModel {
+class ProductPhoneScreenModal {
   final String id;
   final String title;
   final String price;
@@ -7,7 +7,7 @@ class ProductModel {
   final String image;
   final String productType;
 
-  ProductModel({
+  ProductPhoneScreenModal({
     required this.id,
     required this.title,
     required this.price,
@@ -16,8 +16,8 @@ class ProductModel {
     required this.productType,
   });
 
-  factory ProductModel.fromJson(Map<String, dynamic> json) {
-    return ProductModel(
+  factory ProductPhoneScreenModal.fromJson(Map<String, dynamic> json) {
+    return ProductPhoneScreenModal(
       id: json["id"].toString(),
       title: json["title"],
       price: json["price"] ,

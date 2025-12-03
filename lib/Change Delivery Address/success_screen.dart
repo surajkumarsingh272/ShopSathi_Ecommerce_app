@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shop_sathi_app/screen/home_screen.dart';
 
 import '../screen/product_screen.dart';
 
@@ -17,14 +18,14 @@ class _SuccessScreenState extends State<SuccessScreen> {
         child: Column(
           children: [
             SizedBox(height: 150,),
-            Image.asset("asset/images/bags.png"),
+            Image.asset("assets/image/img_13.png"),
             SizedBox(height: 30),
             Text("Success!",style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold),),
             SizedBox(height: 20,),
             Text("Your order will be delivered soon"),
             Text("Thank you for choosing our app!"),
             SizedBox(height: 110,),
-            MaterialButton(onPressed: (){Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ProductScreen(),));},height: 50,minWidth: 300,color: Colors.blueAccent,shape: OutlineInputBorder(borderRadius: BorderRadius.circular(10),borderSide: BorderSide(color: Colors.blueAccent)),child: Text("CONTINUE SHOPPING",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),)
+            MaterialButton(onPressed: (){Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen(),));},height: 50,minWidth: 300,color: Colors.blueAccent,shape: OutlineInputBorder(borderRadius: BorderRadius.circular(10),borderSide: BorderSide(color: Colors.blueAccent)),child: Text("CONTINUE SHOPPING",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),)
           ],
         ),
       ),

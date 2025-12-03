@@ -121,7 +121,7 @@ class _ProductWishlistState extends State<ProductWishlist> {
                                 ClipRRect(
                                   borderRadius: const BorderRadius.vertical(
                                       top: Radius.circular(14)),
-                                  child: Image.asset("images/first_image.jpeg", height: 165, width: double.infinity,  fit: BoxFit.cover,),
+                                  child: Image.asset("assets/image/first_image.jpeg", height: 165, width: double.infinity,  fit: BoxFit.cover,),
                                 ),
                                 Positioned(
                                   left: 10,

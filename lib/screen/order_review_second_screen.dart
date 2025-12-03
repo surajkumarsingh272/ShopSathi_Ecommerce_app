@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../Change Delivery Address/add_delivery_screen.dart';
+import '../Change Delivery Address/change_delivery_screen.dart';
+
 class OrderReviewSecondScreen extends StatefulWidget {
   const OrderReviewSecondScreen({super.key});
 
@@ -60,7 +63,7 @@ class _OrderReviewSecondScreenState extends State<OrderReviewSecondScreen> {
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(16),
-                        child: Image.asset("images/first_image.jpeg",fit: BoxFit.cover,),
+                        child: Image.asset("assets/image/first_image.jpeg",fit: BoxFit.cover,),
                       ),
                     ),
                     const SizedBox(width: 12),
@@ -172,7 +175,7 @@ class _OrderReviewSecondScreenState extends State<OrderReviewSecondScreen> {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(12),
-                child: Image.asset( "images/first_image.jpeg",    width: 120,  height: 145, fit: BoxFit.cover,),
+                child: Image.asset( "assets/image/first_image.jpeg",    width: 120,  height: 145, fit: BoxFit.cover,),
               ),
               Positioned(
                 right: 8,
@@ -247,7 +250,9 @@ class _OrderReviewSecondScreenState extends State<OrderReviewSecondScreen> {
                 ),
               ),
               OutlinedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => AddDeliveryScreen(),));
+                },
                 style: OutlinedButton.styleFrom(
                   side: const BorderSide(color: Colors.blue),
                   shape: RoundedRectangleBorder(
@@ -338,7 +343,9 @@ class _OrderReviewSecondScreenState extends State<OrderReviewSecondScreen> {
             ],
           ),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => ChangeDeliveryScreen(),));
+            },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.blue,
               padding: const EdgeInsets.symmetric(horizontal: 35, vertical: 12),

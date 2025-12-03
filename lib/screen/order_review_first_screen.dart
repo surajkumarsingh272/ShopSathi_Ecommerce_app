@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shop_sathi_app/Change%20Delivery%20Address/add_delivery_screen.dart';
+import 'package:shop_sathi_app/Change%20Delivery%20Address/change_delivery_screen.dart';
+import 'package:shop_sathi_app/screen/order_review_second_screen.dart';
 
 class OrderReviewFirstScreen extends StatefulWidget {
   const OrderReviewFirstScreen({super.key});
@@ -57,7 +60,7 @@ class _OrderReviewFirstScreenState extends State<OrderReviewFirstScreen> {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(12),
                         child: Image.asset(
-                          "images/first_image.jpeg", width: 120,
+                          "assets/image/first_image.jpeg", width: 120,
                           height: 145,
                           fit: BoxFit.cover,),
                       ),
@@ -151,7 +154,9 @@ class _OrderReviewFirstScreenState extends State<OrderReviewFirstScreen> {
                         ),
                       ),
                       OutlinedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => AddDeliveryScreen(),));
+                        },
                         style: OutlinedButton.styleFrom(
                           side: const BorderSide(color: Colors.blue),
                           shape: RoundedRectangleBorder(
@@ -225,8 +230,11 @@ class _OrderReviewFirstScreenState extends State<OrderReviewFirstScreen> {
                 ),
               ],
             ),
+
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => OrderReviewSecondScreen(),));
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
                 padding:

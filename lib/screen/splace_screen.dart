@@ -1,6 +1,11 @@
 
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../providers/auth_provider.dart';
+import 'home_screen.dart';
+import 'login_screen.dart';
 import 'onboarding_page.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -15,8 +20,45 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Timer(const Duration(seconds: 2), () {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => OnbordingScreen()));
+      checkLogin();
     });
+  }
+
+  void checkLogin() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? accessToken = prefs.getString("accessToken");
+    String? refreshToken = prefs.getString("refreshToken");
+
+    final auth = Provider.of<AuthProvider>(context, listen: false);
+
+    if (accessToken != null) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const HomeScreen()),
+      );
+    } else if (refreshToken != null) {
+      try {
+        final data = await auth.refreshToken(refreshToken);
+        await prefs.setString("accessToken", data["accessToken"]);
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const HomeScreen()),
+        );
+      } catch (e) {
+        // Invalid token → LoginScreen
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const LoginScreen()),
+        );
+      }
+    } else {
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const LoginScreen()),
+      );
+    }
   }
 
   @override

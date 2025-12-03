@@ -1,9 +1,8 @@
 import 'package:flutter/cupertino.dart';
-
-import '../models/ProductModel.dart';
 import '../models/product_color_model.dart';
 import '../models/product_highlight_model.dart';
 import '../models/product_image_model.dart';
+import '../models/product_model.dart';
 import '../models/product_offer_model.dart';
 import '../models/product_size_model.dart';
 import '../services/product_api.dart';
@@ -17,6 +16,8 @@ class ProductDetailsProvider with ChangeNotifier {
   List<ProductOfferModel> offers = [];
   List<ProductHighlightModel> highlights = [];
 
+
+
   Future<void> loadAllProductData(int id) async {
     product = await ProductApi.fetchProduct(id);
     colors = await ProductApi.fetchColors(id);
@@ -24,7 +25,18 @@ class ProductDetailsProvider with ChangeNotifier {
     images = await ProductApi.fetchImages(id);
     offers = await ProductApi.fetchOffers(id);
     highlights = await ProductApi.fetchHighlights(id);
-
     notifyListeners();
   }
+
 }
+
+class ImageModel {
+  final String imageUrl;
+
+  ImageModel({required this.imageUrl});
+
+  factory ImageModel.fromJson(Map<String, dynamic> json) {
+    return ImageModel(
+      imageUrl: json['imageUrl'] ?? '',
+    );
+  }}
