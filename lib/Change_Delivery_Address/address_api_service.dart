@@ -11,7 +11,6 @@ class AddressApiService {
       var convertToModel = jsonBody.map((e)=> AddressModel.jsonToModel(e),).toList();
       return convertToModel;
     }
-
     return null;
   }
   static Future<AddressModel?> postAddressApiData(Map<String,dynamic> data)async{
