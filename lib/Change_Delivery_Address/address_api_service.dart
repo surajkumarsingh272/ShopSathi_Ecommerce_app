@@ -12,7 +12,6 @@ class AddressApiService {
       return convertToModel;
     }
 
-
     return null;
   }
   static Future<AddressModel?> postAddressApiData(Map<String,dynamic> data)async{
