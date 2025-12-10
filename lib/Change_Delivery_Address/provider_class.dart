@@ -43,86 +43,6 @@ class ProviderClass with ChangeNotifier {
     }
   }
 
-  // Future<bool> addProduct(BuildContext context) async {
-  //   var data = {
-  //     "user_id": 1,
-  //     "name": nameController.text,
-  //     "last_name": lastNameController.text,
-  //     "address_line": addressController.text,
-  //     "city": cityController.text,
-  //     "contact": phoneController.text,
-  //     "house_no": houseController.text,
-  //     "state": stateController.text,
-  //     "pincode": pinCodeController.text,
-  //   };
-  //
-  //   var response = await AddressApiService.postAddressApiData(data);
-  //
-  //   if (response != null) {
-  //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Address Added Successfully", style: TextStyle(color: Colors.white)), backgroundColor: Colors.green,),);
-  //     getAddressData();
-  //     return true;
-  //   }
-  //
-  //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Failed to Add Address"), backgroundColor: Colors.red,),);
-  //   return false;
-  // }
-
-  // Future<bool> addProduct(BuildContext context) async {
-  //   // 🔍 Form Validation
-  //   if (!formKey.currentState!.validate()) {
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(content: Text("Please fill all required fields")),
-  //     );
-  //     return false;
-  //   }
-  //
-  //   var data = {
-  //     "user_id": 1,
-  //     "name": nameController.text.trim(),
-  //     "last_name": lastNameController.text.trim(),
-  //     "address_line": addressController.text.trim(),
-  //     "city": cityController.text.trim(),
-  //     "contact": phoneController.text.trim(),
-  //     "house_no": houseController.text.trim(),
-  //     "state": stateController.text.trim(),
-  //     "pincode": pinCodeController.text.trim(),
-  //   };
-  //
-  //   var response = await AddressApiService.postAddressApiData(data);
-  //   if (response != null) {
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(
-  //         content: Text(
-  //           "Address Added Successfully",
-  //           style: TextStyle(color: Colors.white),
-  //         ),
-  //         backgroundColor: Colors.green,
-  //       ),
-  //     );
-  //     await getAddressData();
-  //     notifyListeners();
-  //     nameController.clear();
-  //     lastNameController.clear();
-  //     addressController.clear();
-  //     cityController.clear();
-  //     phoneController.clear();
-  //     houseController.clear();
-  //     stateController.clear();
-  //     pinCodeController.clear();
-  //     return true;
-  //   }
-  //
-  //   ScaffoldMessenger.of(context).showSnackBar(
-  //     SnackBar(
-  //       content: Text("Failed to Add Address"),
-  //       backgroundColor: Colors.red,
-  //     ),
-  //   );
-  //
-  //   return false;
-  // }
-
   Future<bool> saveOrUpdateAddress(BuildContext context, {int? addressId}) async {
     if (!formKey.currentState!.validate()) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -145,10 +65,8 @@ class ProviderClass with ChangeNotifier {
 
     var response;
     if (addressId != null) {
-      // Update
       response = await AddressApiService.updateAddressApiData(addressId, data);
     } else {
-      // Add new
       response = await AddressApiService.postAddressApiData(data);
     }
 
@@ -197,7 +115,6 @@ class ProviderClass with ChangeNotifier {
     selectedIndex = index;
     selectedAddress = addressList[index];
 
-    // Controllers में pre-fill
     nameController.text = selectedAddress!.name;
     lastNameController.text = selectedAddress!.lastName;
     addressController.text = selectedAddress!.addressLine;
