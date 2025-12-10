@@ -264,22 +264,31 @@ class _AddDeliveryScreenState extends State<AddDeliveryScreen> {
           ),
         ),
       ),
-      bottomNavigationBar:  Container(height: 70,color: Colors.white,
-        child: Padding(
-          padding: EdgeInsets.only(left: 15,right: 15,top: 10,bottom: 10),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: MaterialButton(onPressed: ()async{
-              bool success = await provider.addProduct(context);
-              if (success) {
-                print("Address Added Successfully!");
-              } else {
-                print("Failed to Add Address");
-              }
-            }, color: Colors.blueAccent, minWidth: 300, child: Text("Submit", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 17),),),
-          ),
-        ),
-      ),
+      bottomNavigationBar: MaterialButton(
+        onPressed: () async {
+          int? existingId = provider.selectedIndex != null
+              ? provider.addressList[provider.selectedIndex!].id
+              : null;
+
+          bool success = await provider.saveOrUpdateAddress(
+            context,
+            addressId: existingId,
+          );
+
+          if (success) {
+            print(existingId != null
+                ? "Address Updated Successfully!"
+                : "Address Added Successfully!");
+          } else {
+            print(existingId != null
+                ? "Failed to Update Address"
+                : "Failed to Add Address");
+          }
+        },
+        color: Colors.blueAccent,
+        child: Text("Submit", style: TextStyle(color: Colors.white)),
+      )
+      ,
     );
   }
 }

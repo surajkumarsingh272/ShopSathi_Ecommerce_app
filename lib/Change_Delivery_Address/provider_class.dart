@@ -68,8 +68,62 @@ class ProviderClass with ChangeNotifier {
   //   return false;
   // }
 
-  Future<bool> addProduct(BuildContext context) async {
-    // 🔍 Form Validation
+  // Future<bool> addProduct(BuildContext context) async {
+  //   // 🔍 Form Validation
+  //   if (!formKey.currentState!.validate()) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(content: Text("Please fill all required fields")),
+  //     );
+  //     return false;
+  //   }
+  //
+  //   var data = {
+  //     "user_id": 1,
+  //     "name": nameController.text.trim(),
+  //     "last_name": lastNameController.text.trim(),
+  //     "address_line": addressController.text.trim(),
+  //     "city": cityController.text.trim(),
+  //     "contact": phoneController.text.trim(),
+  //     "house_no": houseController.text.trim(),
+  //     "state": stateController.text.trim(),
+  //     "pincode": pinCodeController.text.trim(),
+  //   };
+  //
+  //   var response = await AddressApiService.postAddressApiData(data);
+  //   if (response != null) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(
+  //         content: Text(
+  //           "Address Added Successfully",
+  //           style: TextStyle(color: Colors.white),
+  //         ),
+  //         backgroundColor: Colors.green,
+  //       ),
+  //     );
+  //     await getAddressData();
+  //     notifyListeners();
+  //     nameController.clear();
+  //     lastNameController.clear();
+  //     addressController.clear();
+  //     cityController.clear();
+  //     phoneController.clear();
+  //     houseController.clear();
+  //     stateController.clear();
+  //     pinCodeController.clear();
+  //     return true;
+  //   }
+  //
+  //   ScaffoldMessenger.of(context).showSnackBar(
+  //     SnackBar(
+  //       content: Text("Failed to Add Address"),
+  //       backgroundColor: Colors.red,
+  //     ),
+  //   );
+  //
+  //   return false;
+  // }
+
+  Future<bool> saveOrUpdateAddress(BuildContext context, {int? addressId}) async {
     if (!formKey.currentState!.validate()) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Please fill all required fields")),
@@ -89,19 +143,29 @@ class ProviderClass with ChangeNotifier {
       "pincode": pinCodeController.text.trim(),
     };
 
-    var response = await AddressApiService.postAddressApiData(data);
+    var response;
+    if (addressId != null) {
+      // Update
+      response = await AddressApiService.updateAddressApiData(addressId, data);
+    } else {
+      // Add new
+      response = await AddressApiService.postAddressApiData(data);
+    }
+
     if (response != null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            "Address Added Successfully",
+            addressId != null ? "Address Updated Successfully" : "Address Added Successfully",
             style: TextStyle(color: Colors.white),
           ),
           backgroundColor: Colors.green,
         ),
       );
+
       await getAddressData();
       notifyListeners();
+
       nameController.clear();
       lastNameController.clear();
       addressController.clear();
@@ -110,17 +174,41 @@ class ProviderClass with ChangeNotifier {
       houseController.clear();
       stateController.clear();
       pinCodeController.clear();
+
       return true;
     }
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text("Failed to Add Address"),
+        content: Text(
+          addressId != null ? "Failed to Update Address" : "Failed to Add Address",
+        ),
         backgroundColor: Colors.red,
       ),
     );
 
     return false;
   }
+
+
+  AddressModel? selectedAddress;
+
+  void setSelectedAddress(int index) {
+    selectedIndex = index;
+    selectedAddress = addressList[index];
+
+    // Controllers में pre-fill
+    nameController.text = selectedAddress!.name;
+    lastNameController.text = selectedAddress!.lastName;
+    addressController.text = selectedAddress!.addressLine;
+    cityController.text = selectedAddress!.city;
+    stateController.text = selectedAddress!.state;
+    pinCodeController.text = selectedAddress!.pincode;
+    houseController.text = selectedAddress!.houseNo;
+    phoneController.text = selectedAddress!.contactNo;
+
+    notifyListeners();
+  }
+
 
 }

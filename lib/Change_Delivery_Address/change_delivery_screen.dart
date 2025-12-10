@@ -138,15 +138,10 @@ class _ChangeDeliveryScreenState extends State<ChangeDeliveryScreen> {
                                         Text("House No:${address.houseNo}"),
                                         SizedBox(height: 10),
                                         GestureDetector(
-                                          child: Text(
-                                            "Edit",
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 15,
-                                              color: Colors.blueAccent,
-                                            ),
+                                          child: Text("Edit", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.blueAccent,),
                                           ),
                                           onTap: () {
+                                            provider.setSelectedAddress(index);
                                             Navigator.push(context, MaterialPageRoute(builder: (context) => AddDeliveryScreen(),),);
                                           },
                                         ),

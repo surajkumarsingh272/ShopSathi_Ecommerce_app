@@ -25,8 +25,8 @@ class AddressModel {
 
   static AddressModel jsonToModel(Map<String, dynamic> data) {
     return AddressModel(
-      id: data['id'] ?? 0,
-      userId: data['user_id'] ?? 0,
+      id: data['id'] is int ? data['id'] : int.tryParse(data['id'].toString()) ?? 0,
+      userId: data['user_id'] is int ? data['user_id'] : int.tryParse(data['user_id'].toString()) ?? 0,
       name: data['name'] ?? "",
       lastName: data['last_name'] ?? "",
       addressLine: data['address_line'] ?? "",
@@ -37,4 +37,5 @@ class AddressModel {
       contactNo: data['contact'] ?? "",
     );
   }
+
 }
