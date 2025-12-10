@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shop_sathi_app/Change%20Delivery%20Address/provider_class.dart';
+import 'package:shop_sathi_app/Change_Delivery_Address/provider_class.dart';
 
 class AddDeliveryScreen extends StatefulWidget {
   const AddDeliveryScreen({super.key});
@@ -15,6 +15,7 @@ class _AddDeliveryScreenState extends State<AddDeliveryScreen> {
     final provider = Provider.of<ProviderClass>(context);
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
@@ -57,16 +58,14 @@ class _AddDeliveryScreenState extends State<AddDeliveryScreen> {
                   },
                 ),
 
-                const SizedBox(height: 10),
-
-                // Last Name
-                const Text("Last Name", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-                const SizedBox(height: 10),
+                SizedBox(height: 10),
+                Text("Last Name", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                SizedBox(height: 10),
                 TextFormField(
                   controller: provider.lastNameController,
                   decoration: InputDecoration(
                     hintText: "Enter Your Last Name",
-                    prefixIcon: const Icon(Icons.person, color: Colors.blueAccent),
+                    prefixIcon: Icon(Icons.person, color: Colors.blueAccent),
                     filled: true,
                     fillColor: Colors.grey.shade200,
                     enabledBorder: OutlineInputBorder(
@@ -84,16 +83,39 @@ class _AddDeliveryScreenState extends State<AddDeliveryScreen> {
                   },
                 ),
 
-                const SizedBox(height: 10),
+                SizedBox(height: 10),
+                Text("Address", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                SizedBox(height: 10),
+                TextFormField(
+                  controller: provider.addressController,
+                  decoration: InputDecoration(
+                    hintText: "Enter Your Address",
+                    prefixIcon: Icon(Icons.person, color: Colors.blueAccent),
+                    filled: true,
+                    fillColor: Colors.grey.shade200,
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(color: Colors.grey.shade300, width: 1.4),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(color: Colors.grey.shade300, width: 1.4),
+                    ),
+                  ),
+                  validator: (v) {
+                    if (v == null || v.isEmpty) return "Enter address";
+                    return null;
+                  },
+                ),
 
-                // City
-                const Text("City", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-                const SizedBox(height: 10),
+                SizedBox(height: 10),
+                Text("City", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                SizedBox(height: 10),
                 TextFormField(
                   controller: provider.cityController,
                   decoration: InputDecoration(
                     hintText: "Enter Your City",
-                    prefixIcon: const Icon(Icons.location_city, color: Colors.blueAccent),
+                    prefixIcon: Icon(Icons.location_city, color: Colors.blueAccent),
                     filled: true,
                     fillColor: Colors.grey.shade200,
                     enabledBorder: OutlineInputBorder(
@@ -148,12 +170,12 @@ class _AddDeliveryScreenState extends State<AddDeliveryScreen> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text("House No", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                        const Text("State", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
                         const SizedBox(height: 10),
                         SizedBox(
                           width: 150,
                           child: TextFormField(
-                            controller: provider.houseController,
+                            controller: provider.stateController,
                             decoration: InputDecoration(
                               filled: true,
                               fillColor: Colors.grey.shade200,
@@ -180,12 +202,12 @@ class _AddDeliveryScreenState extends State<AddDeliveryScreen> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text("Apartment No", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                        const Text("House No", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
                         const SizedBox(height: 10),
                         SizedBox(
                           width: 150,
                           child: TextFormField(
-                            controller: provider.apartmentController,
+                            controller: provider.houseController,
                             decoration: InputDecoration(
                               filled: true,
                               fillColor: Colors.grey.shade200,
@@ -237,32 +259,24 @@ class _AddDeliveryScreenState extends State<AddDeliveryScreen> {
                     return null;
                   },
                 ),
-
-                const SizedBox(height: 25),
-
-                // Submit Button
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: MaterialButton(
-                    onPressed: () async {
-                      if (provider.formKey.currentState!.validate()) {
-                        final success = await provider.addAndUpdateData(context);
-                        if (success) {
-                          Navigator.pop(context);
-                        }
-                      }
-                    },
-                    color: Colors.blueAccent,
-                    height: 50,
-                    minWidth: 400,
-                    child: const Text(
-                      "Submit",
-                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 17),
-                    ),
-                  ),
-                )
               ],
             ),
+          ),
+        ),
+      ),
+      bottomNavigationBar:  Container(height: 70,color: Colors.white,
+        child: Padding(
+          padding: EdgeInsets.only(left: 15,right: 15,top: 10,bottom: 10),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: MaterialButton(onPressed: ()async{
+              bool success = await provider.addProduct(context);
+              if (success) {
+                print("Address Added Successfully!");
+              } else {
+                print("Failed to Add Address");
+              }
+            }, color: Colors.blueAccent, minWidth: 300, child: Text("Submit", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 17),),),
           ),
         ),
       ),

@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:shop_sathi_app/Change%20Delivery%20Address/add_delivery_screen.dart';
-import 'package:shop_sathi_app/Change%20Delivery%20Address/change_delivery_screen.dart';
 import 'package:shop_sathi_app/screen/order_review_second_screen.dart';
+
+import '../Change_Delivery_Address/add_delivery_screen.dart';
 
 class OrderReviewFirstScreen extends StatefulWidget {
   const OrderReviewFirstScreen({super.key});

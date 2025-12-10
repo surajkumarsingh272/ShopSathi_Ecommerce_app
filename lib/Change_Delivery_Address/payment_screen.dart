@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shop_sathi_app/Change%20Delivery%20Address/provider_class.dart';
-import 'package:shop_sathi_app/Change%20Delivery%20Address/success_screen.dart';
+import 'package:shop_sathi_app/Change_Delivery_Address/provider_class.dart';
+import 'package:shop_sathi_app/Change_Delivery_Address/success_screen.dart';
 
 import 'change_delivery_screen.dart';
 
