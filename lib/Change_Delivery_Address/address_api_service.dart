@@ -15,8 +15,6 @@ class AddressApiService {
   }
 
 
-
-
   static Future<AddressModel?> postAddressApiData(Map<String,dynamic> data)async{
     var response = await http.post(Uri.parse("http://192.168.31.190:2001/add_address"),headers: {"Content-Type":"application/json"},body: jsonEncode(data));
     if(response.statusCode == 200 || response.statusCode == 201){
