@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import '../models/product_model.dart';
 import '../models/category_model.dart';
-import '../models/search_models/recent_search_model.dart';
+import '../models/product_status_model.dart';
 import '../services/product_api.dart';
 
 class ProductProvider with ChangeNotifier {
@@ -37,4 +37,12 @@ class ProductProvider with ChangeNotifier {
       notifyListeners();
     }
   }
+  List<ProductStatusModel> productStatus = [];
+
+  Future<void> loadProductStatus() async {
+    var data = await ProductApi.fetchProductStatus();
+    productStatus = data;
+    notifyListeners();
+  }
+
 }

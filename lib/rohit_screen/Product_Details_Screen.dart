@@ -34,7 +34,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 children: [
                  ClipRRect(
                    borderRadius: BorderRadius.circular(9),
-                   child: Container(
+                   child: SizedBox(
                      height: 89,
                      width: 80,
                      child: Image(image: AssetImage("Image/girlhis5.png"),fit: BoxFit.cover,),

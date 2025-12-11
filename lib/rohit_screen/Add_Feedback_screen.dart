@@ -118,7 +118,7 @@ class _AddFeedbackScreenState extends State<AddFeedbackScreen> {
         ),
         Padding(
           padding: const EdgeInsets.all(12),
-          child: Container(
+          child: SizedBox(
             width: double.infinity,
             child: ElevatedButton(
               onPressed: () {},
@@ -147,7 +147,7 @@ class _AddFeedbackScreenState extends State<AddFeedbackScreen> {
 
         Padding(
           padding: const EdgeInsets.only(top: 400,left: 10,right: 10),
-          child: Container(
+          child: SizedBox(
 
             width: double.infinity,
             child:  ElevatedButton(

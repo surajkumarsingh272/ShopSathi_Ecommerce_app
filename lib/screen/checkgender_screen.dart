@@ -1,7 +1,6 @@
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'login_screen.dart';
+import 'auth_screen/login_screen.dart';
 
 
 class CheckGenderScreen extends StatefulWidget {

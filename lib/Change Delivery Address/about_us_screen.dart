@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:cupertino_icons/cupertino_icons.dart';
 class AboutUsScreen extends StatefulWidget {
   const AboutUsScreen({super.key});
 
@@ -53,7 +52,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                             SizedBox(height: 8),
                             Text("We are an online shopping\n app offering a wide range\n of products with excellent\n quality and competitive\n prices.", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14,),),
                             SizedBox(height: 20,),
-                            MaterialButton(onPressed: (){},child: Text("Learn more"),shape: OutlineInputBorder(),minWidth: 120,)
+                            MaterialButton(onPressed: (){},shape: OutlineInputBorder(),minWidth: 120,child: Text("Learn more"),)
                           ],
                         ),
                       ),

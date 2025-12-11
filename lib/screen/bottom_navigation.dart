@@ -3,7 +3,7 @@ import 'package:shop_sathi_app/screen/card_screen.dart';
 import 'package:shop_sathi_app/screen/categories_screen.dart';
 import 'package:shop_sathi_app/screen/home_screen.dart';
 import 'package:shop_sathi_app/screen/product_wishlist.dart';
-import 'package:shop_sathi_app/screen/profile_screen.dart';
+import 'package:shop_sathi_app/screen/profile_screen/profile_screen.dart';
 
 class BottomNavigation extends StatefulWidget {
   const BottomNavigation({super.key});
@@ -49,7 +49,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
               child: Container(
                 padding: EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.deepPurple,
+                  color: Colors.blue,
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
@@ -85,14 +85,14 @@ class _BottomNavigationState extends State<BottomNavigation> {
             height: 4,
             width: isActive ? 20 : 0,
             decoration: BoxDecoration(
-              color: Colors.deepPurple,
+              color: Colors.blue,
               borderRadius: BorderRadius.circular(10),
             ),
           ),
           SizedBox(height: 6),
 
-          Icon(icon, size: isActive ? 30 : 26,color: isActive ? Colors.deepPurple : Colors.grey,),
-          Text(label,style: TextStyle(color: isActive ? Colors.deepPurple : Colors.grey, fontSize: 12,)),
+          Icon(icon, size: isActive ? 30 : 26,color: isActive ? Colors.blue : Colors.grey,),
+          Text(label,style: TextStyle(color: isActive ? Colors.blue : Colors.grey, fontSize: 12,)),
         ],
       ),
     );

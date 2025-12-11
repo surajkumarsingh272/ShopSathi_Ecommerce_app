@@ -3,10 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../providers/auth_provider.dart';
-import 'home_screen.dart';
+import 'package:shop_sathi_app/screen/bottom_navigation.dart';
+import '../../providers/auth_provider.dart';
 import 'login_screen.dart';
-import 'onboarding_page.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -34,7 +33,7 @@ class _SplashScreenState extends State<SplashScreen> {
     if (accessToken != null) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) => const HomeScreen()),
+        MaterialPageRoute(builder: (_) => const BottomNavigation()),
       );
     } else if (refreshToken != null) {
       try {
@@ -43,7 +42,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (_) => const HomeScreen()),
+          MaterialPageRoute(builder: (_) => const BottomNavigation()),
         );
       } catch (e) {
         // Invalid token → LoginScreen

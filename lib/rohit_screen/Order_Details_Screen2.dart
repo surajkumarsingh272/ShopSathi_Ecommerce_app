@@ -262,7 +262,7 @@ class _OrderDetailsScreen2State extends State<OrderDetailsScreen2> {
                       children: [
                         ClipRRect(
                           borderRadius: BorderRadius.circular(8),
-                          child: Container(
+                          child: SizedBox(
                             height: 160,
                             width: 140,
                             child: Image.asset(

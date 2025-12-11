@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shop_sathi_app/screen/view_order_details_screen.dart';
+import 'package:shop_sathi_app/screen/profile_screen/view_order_details_screen.dart';
 
 class MyOrdersScreen extends StatelessWidget {
   const MyOrdersScreen({super.key});

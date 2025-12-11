@@ -1,42 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shop_sathi_app/Change%20Delivery%20Address/provider_class.dart';
+import '../providers/address_provider.dart';
 
-class AddDeliveryScreen extends StatefulWidget {
+class AddDeliveryScreen extends StatelessWidget {
   const AddDeliveryScreen({super.key});
 
   @override
-  State<AddDeliveryScreen> createState() => _AddDeliveryScreenState();
-}
-
-class _AddDeliveryScreenState extends State<AddDeliveryScreen> {
-  @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<ProviderClass>(context);
+    final provider = Provider.of<AddressProvider>(context);
+    final formKey = GlobalKey<FormState>();
+    final isEdit = provider.editingId != null;
 
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
           child: Form(
-            key: provider.formKey,
+            key: formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 50),
-
-                const Text(
-                  "Please Enter Your Details",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                Text(
+                  isEdit ? "Edit Your Address" : "Please Enter Your Details",
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
-
                 const SizedBox(height: 20),
 
                 // Name
                 const Text("Name", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                 const SizedBox(height: 10),
                 TextFormField(
-                  controller: provider.nameController,
+                  initialValue: provider.name,
+                  onChanged: (v) => provider.name = v,
                   decoration: InputDecoration(
                     hintText: "Enter Your Name",
                     prefixIcon: const Icon(Icons.person, color: Colors.blueAccent),
@@ -51,19 +47,15 @@ class _AddDeliveryScreenState extends State<AddDeliveryScreen> {
                       borderSide: BorderSide(color: Colors.grey.shade300, width: 1.4),
                     ),
                   ),
-                  validator: (v) {
-                    if (v == null || v.isEmpty) return "Enter name";
-                    return null;
-                  },
+                  validator: (v) => (v == null || v.isEmpty) ? "Enter name" : null,
                 ),
 
                 const SizedBox(height: 10),
-
-                // Last Name
                 const Text("Last Name", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                 const SizedBox(height: 10),
                 TextFormField(
-                  controller: provider.lastNameController,
+                  initialValue: provider.lastName,
+                  onChanged: (v) => provider.lastName = v,
                   decoration: InputDecoration(
                     hintText: "Enter Your Last Name",
                     prefixIcon: const Icon(Icons.person, color: Colors.blueAccent),
@@ -78,19 +70,14 @@ class _AddDeliveryScreenState extends State<AddDeliveryScreen> {
                       borderSide: BorderSide(color: Colors.grey.shade300, width: 1.4),
                     ),
                   ),
-                  validator: (v) {
-                    if (v == null || v.isEmpty) return "Enter last name";
-                    return null;
-                  },
                 ),
 
                 const SizedBox(height: 10),
-
-                // City
                 const Text("City", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                 const SizedBox(height: 10),
                 TextFormField(
-                  controller: provider.cityController,
+                  initialValue: provider.city,
+                  onChanged: (v) => provider.city = v,
                   decoration: InputDecoration(
                     hintText: "Enter Your City",
                     prefixIcon: const Icon(Icons.location_city, color: Colors.blueAccent),
@@ -105,20 +92,16 @@ class _AddDeliveryScreenState extends State<AddDeliveryScreen> {
                       borderSide: BorderSide(color: Colors.grey.shade300, width: 1.4),
                     ),
                   ),
-                  validator: (v) {
-                    if (v == null || v.isEmpty) return "Enter city";
-                    return null;
-                  },
+                  validator: (v) => (v == null || v.isEmpty) ? "Enter city" : null,
                 ),
 
                 const SizedBox(height: 10),
-
-                // Phone Number
-                const Text("Number", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                const Text("Phone", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                 const SizedBox(height: 10),
                 TextFormField(
-                  controller: provider.phoneController,
+                  initialValue: provider.phone,
                   keyboardType: TextInputType.number,
+                  onChanged: (v) => provider.phone = v,
                   decoration: InputDecoration(
                     hintText: "Enter Your Phone Number",
                     prefixIcon: const Icon(Icons.call, color: Colors.blueAccent),
@@ -141,19 +124,21 @@ class _AddDeliveryScreenState extends State<AddDeliveryScreen> {
                 ),
 
                 const SizedBox(height: 10),
-
-                // HOUSE + APARTMENT
                 Row(
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text("House No", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
-                        const SizedBox(height: 10),
-                        SizedBox(
-                          width: 150,
-                          child: TextFormField(
-                            controller: provider.houseController,
+                    // House No
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "House No",
+                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                          ),
+                          const SizedBox(height: 10),
+                          TextFormField(
+                            initialValue: provider.houseNo,
+                            onChanged: (v) => provider.houseNo = v,
                             decoration: InputDecoration(
                               filled: true,
                               fillColor: Colors.grey.shade200,
@@ -166,26 +151,24 @@ class _AddDeliveryScreenState extends State<AddDeliveryScreen> {
                                 borderSide: BorderSide(color: Colors.grey.shade300, width: 1.4),
                               ),
                             ),
-                            validator: (v) {
-                              if (v == null || v.isEmpty) return "Required";
-                              return null;
-                            },
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-
-                    const SizedBox(width: 20),
-
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text("Apartment No", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
-                        const SizedBox(height: 10),
-                        SizedBox(
-                          width: 150,
-                          child: TextFormField(
-                            controller: provider.apartmentController,
+                    const SizedBox(width: 20), // Dono fields ke beech gap
+                    // Apartment No
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "Apartment No",
+                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                          ),
+                          const SizedBox(height: 10),
+                          TextFormField(
+                            initialValue: provider.roadName,
+                            onChanged: (v) => provider.roadName = v,
                             decoration: InputDecoration(
                               filled: true,
                               fillColor: Colors.grey.shade200,
@@ -198,25 +181,20 @@ class _AddDeliveryScreenState extends State<AddDeliveryScreen> {
                                 borderSide: BorderSide(color: Colors.grey.shade300, width: 1.4),
                               ),
                             ),
-                            validator: (v) {
-                              if (v == null || v.isEmpty) return "Required";
-                              return null;
-                            },
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ],
                 ),
 
                 const SizedBox(height: 10),
-
-                // Pin Code
                 const Text("Pin Code", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                 const SizedBox(height: 10),
                 TextFormField(
-                  controller: provider.pinCodeController,
+                  initialValue: provider.pinCode,
                   keyboardType: TextInputType.number,
+                  onChanged: (v) => provider.pinCode = v,
                   decoration: InputDecoration(
                     hintText: "Enter Your Pin Code",
                     prefixIcon: const Icon(Icons.password, color: Colors.blueAccent),
@@ -231,35 +209,23 @@ class _AddDeliveryScreenState extends State<AddDeliveryScreen> {
                       borderSide: BorderSide(color: Colors.grey.shade300, width: 1.4),
                     ),
                   ),
-                  validator: (v) {
-                    if (v == null || v.isEmpty) return "Enter pin code";
-                    if (v.length != 6) return "Enter valid pin";
-                    return null;
-                  },
                 ),
 
                 const SizedBox(height: 25),
-
-                // Submit Button
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: MaterialButton(
+                MaterialButton(
                     onPressed: () async {
-                      if (provider.formKey.currentState!.validate()) {
-                        final success = await provider.addAndUpdateData(context);
+                      if (formKey.currentState!.validate()) {
+                        bool success = await provider.addOrUpdateAddress();
                         if (success) {
+                          await provider.fetchAddresses(1);
                           Navigator.pop(context);
                         }
                       }
                     },
-                    color: Colors.blueAccent,
-                    height: 50,
-                    minWidth: 400,
-                    child: const Text(
-                      "Submit",
-                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 17),
-                    ),
-                  ),
+                  color: Colors.blueAccent,
+                  height: 50,
+                  minWidth: double.infinity,
+                  child: Text(isEdit ? "Update" : "Submit", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 17)),
                 )
               ],
             ),

@@ -139,32 +139,46 @@ class _FAQCardState extends State<FAQCard> {
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16),
-        child: ExpansionTile(
-          tilePadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          childrenPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          title: Text(
-            widget.question,
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: _isExpanded ? Colors.deepPurple : Colors.black87,
-            ),
+        child: Theme(
+          data: Theme.of(context).copyWith(
+            dividerColor: Colors.transparent,   // 🔥 removes top/bottom line
           ),
-          trailing: Icon(
-            _isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
-            color: Colors.deepPurple,
-          ),
-          onExpansionChanged: (expanded) {
-            setState(() {
-              _isExpanded = expanded;
-            });
-          },
-          children: [
-            Text(
-              widget.answer,
-              style: const TextStyle(fontSize: 14, color: Colors.black54, height: 1.5),
+          child: ExpansionTile(
+            shape: const RoundedRectangleBorder(
+              side: BorderSide(color: Colors.transparent), // no border
             ),
-          ],
+            collapsedShape: const RoundedRectangleBorder(
+              side: BorderSide(color: Colors.transparent), // no border
+            ),
+
+            tilePadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            childrenPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+
+            title: Text(
+              widget.question,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: _isExpanded ? Colors.deepPurple : Colors.black87,
+              ),
+            ),
+
+            trailing: Icon(
+              _isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+              color: Colors.deepPurple,
+            ),
+
+            onExpansionChanged: (expanded) {
+              setState(() => _isExpanded = expanded);
+            },
+
+            children: [
+              Text(
+                widget.answer,
+                style: const TextStyle(fontSize: 14, color: Colors.black54, height: 1.5),
+              ),
+            ],
+          ),
         ),
       ),
     );

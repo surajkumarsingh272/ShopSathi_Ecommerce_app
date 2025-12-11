@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class AddFeedbackScreen1 extends StatefulWidget {
@@ -168,7 +167,7 @@ class _AddFeedbackScreen1State extends State<AddFeedbackScreen1> {
             ),
             Padding(
               padding: const EdgeInsets.only(top: 393,left: 10,right: 10),
-              child: Container(
+              child: SizedBox(
                 height: 45,
                  width: double.infinity,
                 child: ElevatedButton(onPressed: () {

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../models/order_model.dart';
-import '../models/product_status_model.dart';
-import '../providers/product_provider.dart';
-import '../providers/order_provider.dart';
+import '../../models/order_model.dart';
+import '../../models/product_status_model.dart';
+import '../../providers/product_provider.dart';
+import '../../providers/order_provider.dart';
 
 class ProductStatusScreen extends StatefulWidget {
   const ProductStatusScreen({super.key});

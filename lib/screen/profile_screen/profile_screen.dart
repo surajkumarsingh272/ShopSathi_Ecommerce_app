@@ -1,22 +1,20 @@
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:shop_sathi_app/Change%20Delivery%20Address/customer_supports.dart';
-import 'package:shop_sathi_app/screen/edit_profile_screen.dart';
-import 'package:shop_sathi_app/screen/faqs_screen.dart';
-import 'package:shop_sathi_app/screen/my_order_screen.dart';
-import 'package:shop_sathi_app/screen/payments_wallet_screen.dart';
-import 'package:shop_sathi_app/screen/privacy_policy_screen.dart';
+import 'package:shop_sathi_app/screen/profile_screen/customer_support_screen.dart';
+import 'package:shop_sathi_app/screen/profile_screen/edit_profile_screen.dart';
+import 'package:shop_sathi_app/screen/profile_screen/faqs_screen.dart';
+import 'package:shop_sathi_app/screen/profile_screen/my_order_screen.dart';
+import 'package:shop_sathi_app/screen/profile_screen/payments_wallet_screen.dart';
+import 'package:shop_sathi_app/screen/profile_screen/privacy_policy_screen.dart';
 import 'package:shop_sathi_app/screen/product_wishlist.dart';
-import 'package:shop_sathi_app/screen/returns_refunds_screen.dart';
-import 'package:shop_sathi_app/screen/saved_addresses_screen.dart';
-import 'package:shop_sathi_app/screen/track_order_screen.dart';
-
-import '../providers/auth_provider.dart';
-import '../providers/profile_provider/profile_provider.dart';
+import 'package:shop_sathi_app/screen/profile_screen/returns_refunds_screen.dart';
+import 'package:shop_sathi_app/screen/profile_screen/saved_addresses_screen.dart';
+import 'package:shop_sathi_app/screen/profile_screen/track_order_screen.dart';
+import '../../providers/auth_provider.dart';
+import '../../providers/profile_provider/profile_provider.dart';
 import 'coupons_offer_screen.dart';
-import 'login_screen.dart';
+import '../auth_screen/login_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -31,22 +29,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     super.initState();
     Future.microtask(() => Provider.of<ProfileProvider>(context,listen: false).fetchProfile());
   }
-
-  // void logoutNow() async {
-  //   var prefs = await SharedPreferences.getInstance();
-  //   String? refreshToken = prefs.getString("refreshToken");
-  //   if (refreshToken != null) {
-  //     final auth = Provider.of<AuthProvider>(context, listen: false);
-  //     auth.logout(refreshToken).then((_) {
-  //       prefs.clear();
-  //       Navigator.pushAndRemoveUntil(
-  //         context,
-  //         MaterialPageRoute(builder: (_) => const LoginScreen()),
-  //             (route) => false,
-  //       );
-  //     });
-  //   }
-  // }
 
   void logoutNow() async {
     bool? confirm = await showDialog(
@@ -104,8 +86,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     final profileProvider = Provider.of<ProfileProvider>(context);
@@ -143,24 +123,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             child: Row(
               children: [
-            ClipRRect(
-            borderRadius: BorderRadius.circular(50),
-      child: Image.network(
-        "http://10.175.170.64:3000/${user?.profileImage}",
-        width: 70,
-        height: 70,
-        fit: BoxFit.cover,
-        errorBuilder: (context, error, stackTrace) {
-          return Image.asset(
-            "assets/image/first_image.jpeg",
-            width: 70,
-            height: 70,
-            fit: BoxFit.cover,
-          );
-        },
-      ),
-    ),
-    SizedBox(width: 16),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(50),
+                  child: Image.network(
+                    "http://10.170.190.64:3000/uploads/${user?.profileImage}",
+                    width: 70,
+                    height: 70,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Image.asset(
+                        "assets/image/first_image.jpeg",
+                        width: 70,
+                        height: 70,
+                        fit: BoxFit.cover,
+                      );
+                    },
+                  ),
+                ),
+                SizedBox(width: 16),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -185,7 +165,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           sectionTitle("My Orders"),
           sectionCard([
             profileTile(Icons.shopping_bag_outlined, "My Orders", Colors.blueAccent,onTab: () {
-              // Navigator.push(context, MaterialPageRoute(builder: (_) => const MyOrdersScreen()));
+              Navigator.push(context, MaterialPageRoute(builder: (_) => const MyOrdersScreen()));
             },),
             profileTile(Icons.local_shipping_outlined, "Track Orders", Colors.green,onTab: () {
               Navigator.push(context, MaterialPageRoute(builder: (_) => const TrackOrderScreen()));
@@ -219,7 +199,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Navigator.push(context, MaterialPageRoute(builder: (_) => const FAQsScreen()));
             },),
             profileTile(Icons.support_agent, "Customer Support", Colors.deepPurple,onTab: () {
-              Navigator.push(context, MaterialPageRoute(builder: (_) => const CustomerSupports()));
+              Navigator.push(context, MaterialPageRoute(builder: (_) => const CustomerSupportScreen()));
             },),
             profileTile(Icons.lock_outline, "Privacy Policy", Colors.brown,onTab: () {
               Navigator.push(context, MaterialPageRoute(builder: (_) => const PrivacyPolicyScreen()));

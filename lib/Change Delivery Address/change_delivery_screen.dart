@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shop_sathi_app/Change%20Delivery%20Address/payment_screen.dart';
-import 'package:shop_sathi_app/Change%20Delivery%20Address/provider_class.dart';
-
+import '../providers/address_provider.dart';
 import 'add_delivery_screen.dart';
+import 'payment_screen.dart';
 
 class ChangeDeliveryScreen extends StatefulWidget {
   const ChangeDeliveryScreen({super.key});
@@ -13,36 +12,47 @@ class ChangeDeliveryScreen extends StatefulWidget {
 }
 
 class _ChangeDeliveryScreenState extends State<ChangeDeliveryScreen> {
+  int selectedIndex = -1;
+
   @override
   void initState() {
     super.initState();
-    Provider.of<ProviderClass>(context, listen: false).fetchData();
+    Future.microtask(() {
+      Provider.of<AddressProvider>(context, listen: false).fetchAddresses(1);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<ProviderClass>(context);
-    final addressProvider = Provider.of<ProviderClass>(context);
+    final provider = Provider.of<AddressProvider>(context);
+
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: Text("Change Delivery Address",style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
-      ),
-      body: CustomScrollView(
+      backgroundColor: Colors.white,
+      body: provider.addresses.isEmpty
+          ? const Center(child: Text("No Address Found"))
+          : CustomScrollView(
         slivers: [
           SliverAppBar(
             backgroundColor: Colors.white,
-            elevation: 2,
             pinned: true,
             automaticallyImplyLeading: false,
-            toolbarHeight: 60,
+            elevation: 2,
             title: Row(
               children: [
-                ClipRRect( borderRadius: BorderRadius.circular(30),
-                  child: Container(height: 45, width: 45, color: Colors.blueAccent,
-                      child: Icon(Icons.arrow_back,color: Colors.white,)),
+                InkWell(
+                  borderRadius: BorderRadius.circular(30),
+                  onTap: () => Navigator.pop(context),
+                  child: Container(
+                    height: 45,
+                    width: 45,
+                    decoration: BoxDecoration(
+                      color: Colors.blueAccent,
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    child: const Icon(Icons.arrow_back, color: Colors.white),
+                  ),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 Expanded(
                   child: SizedBox(
                     height: 45,
@@ -62,103 +72,140 @@ class _ChangeDeliveryScreenState extends State<ChangeDeliveryScreen> {
                   ),
                 ),
                 const SizedBox(width: 10),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Container(
-                    height: 45,
-                    width: 45,
+                Container(
+                  height: 45,
+                  width: 45,
+                  decoration: BoxDecoration(
                     color: Colors.blueAccent,
-                    child: const Icon(Icons.keyboard_voice_outlined, color: Colors.white),
+                    borderRadius: BorderRadius.circular(10),
                   ),
+                  child: const Icon(Icons.keyboard_voice_outlined, color: Colors.white),
                 ),
               ],
             ),
           ),
-
           SliverList(
-            delegate: SliverChildBuilderDelegate((context, index) {
-                final item = provider.list[index];
-                bool isExpanded = addressProvider.selectedIndex == index;
+            delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                final item = provider.addresses[index];
+                final isExpanded = selectedIndex == index;
+
                 return Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8),
                   child: Container(
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.blueAccent),
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: InkWell(
-                      onTap: () {
-                        addressProvider.toggleIndex(index);
-                      },
-                      child: Column(
-                        children: [
-                          ListTile(
-                            title: Text(
-                              "${item['name']} ${item['lastName']}",
-                              style: TextStyle(fontWeight: FontWeight.w600),
-                            ),
-                            subtitle: Text("City: ${item['city']}"),
-                            trailing: Radio(
-                              value: index,
-                              groupValue: provider.selectedIndex,
-                              onChanged: (val) {
-                                provider.toggleIndex(index);
-                              },
-                              activeColor: Colors.blueAccent,
-                            ),
-                          ),
-
-                          AnimatedContainer(
-                            duration: Duration(milliseconds: 300),
-                            height: isExpanded ? 200 : 0,
-                            padding: EdgeInsets.symmetric(horizontal: 16),
-                            child: SingleChildScrollView(
-                              child: isExpanded ? Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text("Phone: ${item['phone']}"),
-                                  Text("House: ${item['house']}"),
-                                  Text("Apartment: ${item['apartment']}"),
-                                  Text("Pincode: ${item['pinCode']}"),
-                                  SizedBox(height: 10),
-
-                                  GestureDetector(
-                                    child: Text(
-                                      "Edit",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 15,
-                                        color: Colors.blueAccent,
-                                      ),
+                    child: Column(
+                      children: [
+                        ListTile(
+                          title: Text(item.name, style: const TextStyle(fontWeight: FontWeight.w600)),
+                          subtitle: Text("City: ${item.city}"),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                                color: Colors.blueAccent,
+                              ),
+                              const SizedBox(width: 8),
+                              GestureDetector(
+                                onTap: () async {
+                                  bool confirm = await showDialog(
+                                    context: context,
+                                    builder: (_) => AlertDialog(
+                                      title: const Text("Confirm Delete"),
+                                      content: const Text("Are you sure you want to delete this address?"),
+                                      actions: [
+                                        TextButton(
+                                            onPressed: () => Navigator.pop(context, false),
+                                            child: const Text("Cancel")),
+                                        TextButton(
+                                            onPressed: () => Navigator.pop(context, true),
+                                            child: const Text("Delete", style: TextStyle(color: Colors.red))),
+                                      ],
                                     ),
-                                    onTap: () {
-                                      provider.initialData(index);
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => AddDeliveryScreen(),
-                                        ),
+                                  );
+                                  if (confirm) {
+                                    bool success = await provider.delete(item.id);
+                                    if (success) {
+                                      await provider.fetchAddresses(1);
+                                    } else {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(content: Text("Failed to delete address")),
                                       );
-                                    },
-                                  ),
-
-                                  SizedBox(height: 20),
-                                  MaterialButton(onPressed: () {Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => PaymentMethodScreen(),),);},
-                                    height: 50, minWidth: double.infinity, color: Colors.blueAccent,
-                                    child: Text("Delivery to this Address", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,),),
-                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))
-                                  ),
-                                ],
-                              ) : null,
-                            ),
+                                    }
+                                  }
+                                },
+                                child: const Icon(Icons.delete, color: Colors.red),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                          onTap: () {
+                            setState(() {
+                              selectedIndex = selectedIndex == index ? -1 : index;
+                            });
+                          },
+                        ),
+                        AnimatedContainer(
+                          duration: const Duration(milliseconds: 300),
+                          height: isExpanded ? 200 : 0,
+                          child: isExpanded
+                              ? Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("Phone: ${item.mobile}"),
+                                Text("House: ${item.houseNo}"),
+                                Text("Road: ${item.roadName}"),
+                                Text("Pincode: ${item.pincode}"),
+                                const SizedBox(height: 10),
+                                GestureDetector(
+                                  child: const Text(
+                                    "Edit",
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.blueAccent),
+                                  ),
+                                  onTap: () {
+                                    provider.setAddressData(item);
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (_) => const AddDeliveryScreen()),
+                                    );
+                                  },
+                                ),
+                                const SizedBox(height: 20),
+                                MaterialButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (_) => const PaymentMethodScreen()),
+                                    );
+                                  },
+                                  height: 50,
+                                  minWidth: double.infinity,
+                                  color: Colors.blueAccent,
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                  child: const Text(
+                                    "Deliver to this Address",
+                                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                              : null,
+                        ),
+                      ],
                     ),
                   ),
                 );
-            },
-              childCount: provider.list.length,
+              },
+              childCount: provider.addresses.length,
             ),
           ),
         ],
@@ -167,7 +214,7 @@ class _ChangeDeliveryScreenState extends State<ChangeDeliveryScreen> {
         backgroundColor: Colors.blueAccent,
         child: const Icon(Icons.add, color: Colors.white),
         onPressed: () {
-          provider.clearField();
+          provider.setAddressData(null);
           Navigator.push(context, MaterialPageRoute(builder: (_) => const AddDeliveryScreen()));
         },
       ),

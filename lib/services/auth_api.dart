@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' as http;
 import '../models/auth_modal/forget_password_modal.dart';
 import '../models/auth_modal/login_modal.dart';
@@ -8,16 +9,37 @@ import '../models/auth_modal/reset_password_modal.dart';
 
 
 class AuthApi {
-  static const String baseUrl = "http://10.175.170.64:3000";
-  static Future<RegisterModel?> register(Map<String, dynamic> userData) async {
-    final response = await http.post( Uri.parse('$baseUrl/register'),body: jsonEncode(userData), headers:{"Content-Type": "application/json"},);
-    var responseBody = response.body;
+  // static const String baseUrl = "https://shop-sathi-api.onrender.com";
+  static const String baseUrl = "https://shop-sathi-api.onrender.com";
+  // static Future<RegisterModel?> register(Map<String, dynamic> userData) async {
+  //   final response = await http.post( Uri.parse('$baseUrl/register'),body: jsonEncode(userData), headers:{"Content-Type": "application/json"},);
+  //   var responseBody = response.body;
+  //   if (response.statusCode == 200) {
+  //     return RegisterModel.fromJson(jsonDecode(responseBody));
+  //   } else {
+  //     throw Exception("Failed to register:$responseBody");
+  //   }
+  // }
+
+  static Future<RegisterModel?> register( Map<String, dynamic> userData, File? imageFile) async {
+    var uri = Uri.parse("$baseUrl/register");
+    var request = http.MultipartRequest("POST", uri);
+    request.fields['name'] = userData['name'];
+    request.fields['email'] = userData['email'];
+    request.fields['phone'] = userData['phone'];
+    request.fields['password'] = userData['password'];
+    if (imageFile != null) {
+      request.files.add(await http.MultipartFile.fromPath("profile_image",imageFile.path,));
+    }
+    var response = await request.send();
+    var responseBody = await response.stream.bytesToString();
     if (response.statusCode == 200) {
       return RegisterModel.fromJson(jsonDecode(responseBody));
     } else {
-      throw Exception("Failed to register:$responseBody");
+      throw Exception("Registration failed: $responseBody");
     }
   }
+
 
   static Future<OtpModel> verifyOtp(Map<String, dynamic> otpData) async {
     var response = await http.post(Uri.parse('$baseUrl/verify-otp'), body: jsonEncode(otpData),headers: {"Content-Type": "application/json"},);
@@ -72,14 +94,30 @@ class AuthApi {
     }
   }
 
+  // static Future<Map<String, dynamic>> getProfile(String accessToken) async {
+  //   final response = await http.get(Uri.parse('$baseUrl/profile'), headers: {"Content-Type": "application/json",
+  //     "Authorization": "Bearer $accessToken", },);
+  //   final body = response.body;
+  //   if (response.statusCode == 200) {
+  //     final data = jsonDecode(body);
+  //     if(data['success'] == true) {
+  //       return data['user'];
+  //     } else {
+  //       throw Exception("Failed to fetch profile: ${data['message']}");
+  //     }
+  //   } else {
+  //     throw Exception("Failed to fetch profile: $body");
+  //   }
+  // }
+
   static Future<Map<String, dynamic>> getProfile(String accessToken) async {
-    final response = await http.get(Uri.parse('$baseUrl/profile'), headers: {"Content-Type": "application/json",
+    final response = await http.get(Uri.parse('$baseUrl/api/profile'), headers: {"Content-Type": "application/json",
       "Authorization": "Bearer $accessToken", },);
     final body = response.body;
     if (response.statusCode == 200) {
       final data = jsonDecode(body);
       if(data['success'] == true) {
-        return data['user'];
+        return data['data'];
       } else {
         throw Exception("Failed to fetch profile: ${data['message']}");
       }

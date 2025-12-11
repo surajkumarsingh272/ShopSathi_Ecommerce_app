@@ -167,11 +167,10 @@
 //   }
 // }
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_sathi_app/providers/auth_provider.dart';
-import 'package:shop_sathi_app/screen/login_screen.dart';
+import 'package:shop_sathi_app/screen/auth_screen/login_screen.dart';
 
 class SignupOtpScreen extends StatefulWidget {
   final String phone;

@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:shop_sathi_app/screen/signup_otp_screen.dart';
+import 'package:shop_sathi_app/screen/auth_screen/signup_otp_screen.dart';
 
 
-import '../providers/auth_provider.dart';
-import 'home_screen.dart';
+import '../../providers/auth_provider.dart';
 
 class ResetNumberScreen extends StatefulWidget {
   final String phone;

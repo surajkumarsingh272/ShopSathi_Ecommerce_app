@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import '../../providers/profile_provider/profile_provider.dart';
+import '../../../providers/profile_provider/profile_provider.dart';
 
 class EditProfileScreens extends StatefulWidget {
   const EditProfileScreens({super.key});
@@ -71,7 +71,7 @@ class _EditProfileScreensState extends State<EditProfileScreens> {
     final provider = Provider.of<ProfileProvider>(context);
 
     String imageUrl = provider.user?.profileImage != null
-        ? "http://10.175.170.64:3000/${provider.user!.profileImage}"
+        ? "http://10.170.190.64:3000/uploads/${provider.user!.profileImage}"
         : "https://via.placeholder.com/150";
 
     return Scaffold(
