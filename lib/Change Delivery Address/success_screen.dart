@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shop_sathi_app/screen/home_screen.dart';
 
-import '../screen/product_screen.dart';
 
 class SuccessScreen extends StatefulWidget {
   const SuccessScreen({super.key});

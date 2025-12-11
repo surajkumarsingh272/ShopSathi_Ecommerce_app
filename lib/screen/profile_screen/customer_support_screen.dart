@@ -8,7 +8,7 @@ class CustomerSupportScreen extends StatelessWidget {
   const CustomerSupportScreen({super.key});
 
   // Phone, email, and chat URLs
-  final String phoneNumber = "+9264104704";
+  final String phoneNumber = "+7970843850";
   final String email = "nagmaTeamt@shopsathi.com";
   final String chatUrl = "https://wa.me/911234567890"; // Example WhatsApp link
 

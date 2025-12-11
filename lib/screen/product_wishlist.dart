@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../providers/wishlist_provider.dart';
 
 class ProductWishlist extends StatefulWidget {
   const ProductWishlist({super.key});
@@ -13,214 +16,141 @@ class _ProductWishlistState extends State<ProductWishlist> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[100],
-
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 1,
-        toolbarHeight: 65,
-        titleSpacing: 16,
-        title: Row(
-          children: [
-            Expanded(
-              child: Container(
-                height: 45,
+        title: const Text(
+          "Your Wishlist",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ),
+      body: Consumer<WishlistProvider>(
+        builder: (context, wishlistProvider, _) {
+          final wishlist = wishlistProvider.wishlist;
+          if (wishlist.isEmpty) {
+            return Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(CupertinoIcons.heart, size: 70, color: Colors.grey.shade500),
+                  const SizedBox(height: 10),
+                  const Text(
+                    "Your Wishlist is Empty",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                  ),
+                  const SizedBox(height: 6),
+                  const Text(
+                    "Add items to see them here",
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                ],
+              ),
+            );
+          }
+
+          return GridView.builder(
+            padding: const EdgeInsets.all(12),
+            itemCount: wishlist.length,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisExtent: 290,
+              crossAxisSpacing: 12,
+              mainAxisSpacing: 12,
+            ),
+            itemBuilder: (_, index) {
+              final item = wishlist[index];
+              return Container(
                 decoration: BoxDecoration(
-                  color: Colors.grey.shade200,
-                  borderRadius: BorderRadius.circular(12),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(14),
+                  boxShadow: const [
+                    BoxShadow(color: Colors.black12, blurRadius: 5, offset: Offset(0, 3))
+                  ],
                 ),
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: Row(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(Icons.search, color: Colors.grey.shade700),
-                    const SizedBox(width: 10),
-                    const Expanded(
-                      child: TextField(
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: "Search in wishlist",
-                          hintStyle:
-                          TextStyle(fontSize: 14, color: Colors.grey),
+                    Stack(
+                      children: [
+                        ClipRRect(
+                          borderRadius: const BorderRadius.vertical(top: Radius.circular(14)),
+                          child: Image.network(
+                            "http://10.175.170.64:3000/uploads/${item.image}",
+                            height: 160,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                            errorBuilder: (_, __, ___) => Container(
+                              height: 160,
+                              color: Colors.grey.shade200,
+                              child: const Icon(Icons.image_not_supported, size: 40, color: Colors.grey),
+                            ),
+                          ),
                         ),
+                        Positioned(
+                          right: 10,
+                          top: 10,
+                          child: GestureDetector(
+                            onTap: () async {
+                              SharedPreferences prefs = await SharedPreferences.getInstance();
+                              String? token = prefs.getString("accessToken");
+                              if (token == null) return;
+
+                              await wishlistProvider.removeWishlistItem(item.wishlistId, token);
+                            },
+                            child: const CircleAvatar(
+                              radius: 18,
+                              backgroundColor: Colors.white,
+                              child: Icon(CupertinoIcons.heart_fill, color: Colors.red, size: 20),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                      child: Text(
+                        item.name,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: Row(
+                        children: [
+                          Text("₹${item.newPrice}", style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.blue)),
+                          const SizedBox(width: 6),
+                          Text("₹${item.oldPrice}", style: const TextStyle(color: Colors.grey, fontSize: 12, decoration: TextDecoration.lineThrough)),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      child: Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+                            decoration: BoxDecoration(color: Colors.green, borderRadius: BorderRadius.circular(6)),
+                            child: Row(
+                              children: [
+                                const Icon(Icons.star, size: 13, color: Colors.white),
+                                const SizedBox(width: 2),
+                                Text(item.rating, style: const TextStyle(color: Colors.white, fontSize: 12)),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: 6),
+                          Text("(${item.reviewsCount} reviews)", style: const TextStyle(color: Colors.grey, fontSize: 11)),
+                        ],
                       ),
                     )
                   ],
                 ),
-              ),
-            ),
-            const SizedBox(width: 10),
-            CircleAvatar(
-              backgroundColor: Colors.blue,
-              child: const Icon(Icons.filter_list, color: Colors.white),
-            ),
-          ],
-        ),
-      ),
-
-      body: Padding(
-        padding: const EdgeInsets.all(12),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text("Your Wishlist",style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),),
-                  Container(
-                    padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                    decoration: BoxDecoration(
-                      color: Colors.red.shade50,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Row(
-                      children: const [
-                        Icon(CupertinoIcons.heart_fill,color: Colors.red, size: 18),
-                        SizedBox(width: 6),
-                        Text("8 Items", style: TextStyle(color: Colors.red, fontSize: 14)),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-
-              const SizedBox(height: 15),
-
-              GridView.builder(
-                itemCount: 8,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate:
-                const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisExtent: 290,
-                  crossAxisSpacing: 12,
-                  mainAxisSpacing: 12,
-                ),
-
-                itemBuilder: (_, index) {
-                  bool isWishlisted = true;
-                  return StatefulBuilder(
-                    builder: (context, setLocalState) {
-                      return Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(14),
-                          boxShadow: [
-                            BoxShadow(
-                                color: Colors.black12,
-                                blurRadius: 6,
-                                offset: Offset(0, 4))
-                          ],
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Stack(
-                              children: [
-                                ClipRRect(
-                                  borderRadius: const BorderRadius.vertical(
-                                      top: Radius.circular(14)),
-                                  child: Image.asset("assets/image/first_image.jpeg", height: 165, width: double.infinity,  fit: BoxFit.cover,),
-                                ),
-                                Positioned(
-                                  left: 10,
-                                  top: 10,
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8, vertical: 4),
-                                    decoration: BoxDecoration(
-                                      color: Colors.red.shade600,
-                                      borderRadius: BorderRadius.circular(6),
-                                    ),
-                                    child: const Text("20% OFF", style: TextStyle( color: Colors.white,fontSize: 11,fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                ),
-
-                                Positioned(
-                                  right: 10,
-                                  top: 10,
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      setLocalState(() {
-                                        isWishlisted = !isWishlisted;
-                                      });
-                                    },
-                                    child: CircleAvatar(
-                                      radius: 18,
-                                      backgroundColor: Colors.white,
-                                      child: Icon(
-                                        isWishlisted? CupertinoIcons.heart_fill: CupertinoIcons.heart, color: isWishlisted ? Colors.red : Colors.black,    size: 20,),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-
-                            const SizedBox(height: 5),
-
-                            const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 8),
-                              child: Text("Premium 6-Layer Rack", maxLines: 2,overflow: TextOverflow.ellipsis,
-                                style: TextStyle( fontWeight: FontWeight.w600, fontSize: 14),
-                              ),
-                            ),
-
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 4),
-                              child: Row(
-                                children: const [
-                                  Text( "₹1400", style: TextStyle( color: Colors.blue,  fontWeight: FontWeight.bold, fontSize: 15),
-                                  ),
-                                  SizedBox(width: 6),
-                                  Text( "₹2000", style: TextStyle(decoration:TextDecoration.lineThrough,color: Colors.grey, fontSize: 12),
-                                  ),
-                                ],
-                              ),
-                            ),
-
-                            const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 8),
-                              child: Text("Free Delivery", style: TextStyle( color: Colors.grey, fontSize: 12),
-                              ),
-                            ),
-                             SizedBox(height: 4),
-                            Padding(
-                              padding: const EdgeInsets.symmetric( horizontal: 8),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    padding: const EdgeInsets.symmetric( horizontal: 6, vertical: 3),
-                                    decoration: BoxDecoration(
-                                        color: Colors.green,
-                                        borderRadius:
-                                        BorderRadius.circular(6)),
-                                    child: Row(
-                                      children: const [
-                                        Icon(Icons.star,size: 13, color: Colors.white),
-                                        SizedBox(width: 2),
-                                        Text( "4.5",  style: TextStyle( color: Colors.white, fontSize: 12),),
-                                      ],
-                                    ),
-                                  ),
-                                  const SizedBox(width: 6),
-                                  const Text( "(523 reviews)", style: TextStyle( color: Colors.grey, fontSize: 11),
-                                  ),
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      );
-                    },
-                  );
-                },
-              ),
-            ],
-          ),
-        ),
+              );
+            },
+          );
+        },
       ),
     );
   }

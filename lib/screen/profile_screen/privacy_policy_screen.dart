@@ -65,7 +65,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
             style: TextStyle(fontSize: 15, color: Colors.black54),
           ),
           const SizedBox(height: 16),
-          ...privacySections.map((section) => _sectionCard(section)).toList(),
+          ...privacySections.map((section) => _sectionCard(section)),
           const SizedBox(height: 20),
           _contactCard(context),
         ],

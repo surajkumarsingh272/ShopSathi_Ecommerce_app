@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shop_sathi_app/screen/bottom_navigation.dart';
 
-import '../providers/auth_provider.dart';
-import 'home_screen.dart';
+import '../../providers/auth_provider.dart';
+import '../../providers/profile_provider/profile_provider.dart';
 
 class OtpScreen extends StatefulWidget {
   final String phone;
@@ -111,6 +111,7 @@ class _OtpScreenState extends State<OtpScreen> {
                           final prefs = await SharedPreferences.getInstance();
                           await prefs.setString("accessToken", res.accessToken);
                           await prefs.setString("refreshToken", res.refreshToken);
+                          await Provider.of<ProfileProvider>(context, listen: false).fetchProfile();
 
                           Navigator.pushAndRemoveUntil(
                             context,

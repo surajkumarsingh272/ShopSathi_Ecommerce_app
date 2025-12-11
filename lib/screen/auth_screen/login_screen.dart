@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:shop_sathi_app/screen/reset_number_screen.dart';
-import '../providers/auth_provider.dart';
-import 'bottom_navigation.dart';
-import 'home_screen.dart';
+import 'package:shop_sathi_app/screen/auth_screen/reset_number_screen.dart';
+import '../../providers/auth_provider.dart';
+import '../bottom_navigation.dart';
 import 'register_screen.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -169,10 +169,16 @@ class _LoginScreenState extends State<LoginScreen> {
                         passController.text.trim(),
                       );
 
-                      if (res != null && res.success) {
+                      if (res.success) {
                         var prefs = await SharedPreferences.getInstance();
                         await prefs.setString("accessToken", res.accessToken ?? "");
                         await prefs.setString("refreshToken", res.refreshToken ?? "");
+
+                        Map<String, dynamic> decoded = JwtDecoder.decode(res.accessToken!);
+                        int userId = decoded["id"];
+                        print("LOGIN USER ID = $userId");
+
+                        await prefs.setInt("userId", userId);
 
                         Navigator.pushAndRemoveUntil(
                           context,
@@ -182,7 +188,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text(res?.message ?? "Login failed"),
+                            content: Text(res.message ?? "Login failed"),
                           ),
                         );
                       }

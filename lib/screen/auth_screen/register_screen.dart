@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import '../../providers/auth_provider.dart';
+import '../../../providers/auth_provider.dart';
 import 'otp_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -12,14 +15,26 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  File? imageFile;
+  pickImage() async {
+    final picker = ImagePicker();
+    final picked = await picker.pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 70,
+    );
+
+    if (picked != null) {
+      setState(() {
+        imageFile = File(picked.path);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<AuthProvider>(context);
-
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-
     var nameController = provider.nameController;
     var emailController = provider.emailController;
     var phoneController = provider.phoneController;
@@ -75,25 +90,91 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   SizedBox(height: height * 0.09),
 
                   /// Dotted Image Picker Box
-                  DottedBorder(
-                    options: CircularDottedBorderOptions(
-                      dashPattern: [10, 10],
-                      strokeWidth: 2,
-                      padding: EdgeInsets.all(width * 0.02),
-                      color: Colors.blueAccent,
-                    ),
-                    child: Container(
-                      height: width * 0.12,
-                      width: width * 0.12,
-                      alignment: Alignment.center,
-                      child: Icon(
-                        Icons.photo_camera_outlined,
-                        size: width * 0.06,
+                  // DottedBorder(
+                  //   options: CircularDottedBorderOptions(
+                  //     dashPattern: [10, 10],
+                  //     strokeWidth: 2,
+                  //     padding: EdgeInsets.all(width * 0.02),
+                  //     color: Colors.blueAccent,
+                  //   ),
+                  //   child: Container(
+                  //     height: width * 0.12,
+                  //     width: width * 0.12,
+                  //     alignment: Alignment.center,
+                  //     child: Icon(
+                  //       Icons.photo_camera_outlined,
+                  //       size: width * 0.06,
+                  //       color: Colors.blueAccent,
+                  //     ),
+                  //   ),
+                  // ),
+
+                  InkWell(
+                    onTap: () {
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (_) => SizedBox(
+                          height: 120,
+                          child: Column(
+                            children: [
+                              ListTile(
+                                leading: Icon(Icons.camera_alt),
+                                title: Text("Camera"),
+                                onTap: () async {
+                                  Navigator.pop(context);
+                                  final picker = ImagePicker();
+                                  final picked = await picker.pickImage(
+                                    source: ImageSource.camera,
+                                    imageQuality: 70,
+                                  );
+                                  if (picked != null) {
+                                    setState(() => imageFile = File(picked.path));
+                                  }
+                                },
+                              ),
+                              ListTile(
+                                leading: Icon(Icons.photo),
+                                title: Text("Gallery"),
+                                onTap: () async {
+                                  Navigator.pop(context);
+                                  final picker = ImagePicker();
+                                  final picked = await picker.pickImage(
+                                    source: ImageSource.gallery,
+                                    imageQuality: 70,
+                                  );
+                                  if (picked != null) {
+                                    setState(() => imageFile = File(picked.path));
+                                  }
+                                },
+                              )
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                    child: DottedBorder(
+                      options: CircularDottedBorderOptions(
+                        dashPattern: [10, 10],
+                        strokeWidth: 2,
+                        padding: EdgeInsets.all(width * 0.02),
                         color: Colors.blueAccent,
+                      ),
+                      child: Container(
+                        height: width * 0.20,
+                        width: width * 0.20,
+                        alignment: Alignment.center,
+                        child: imageFile == null
+                            ? Icon(Icons.photo_camera_outlined, size: width * 0.1)
+                            : ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Image.file(
+                            imageFile!,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                       ),
                     ),
                   ),
-
                   SizedBox(height: height * 0.03),
 
                   /// Username Input
@@ -161,6 +242,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         emailController.text.trim(),
                         phoneController.text.trim(),
                         passController.text.trim(),
+                        imageFile,
                       );
 
                       if (res != null && res.success) {

@@ -295,7 +295,7 @@ class _CustomerServiceChatState extends State<CustomerServiceChat> {
         child: Row(
           children: [
             Expanded(
-              child: Container(
+              child: SizedBox(
                 height: 50,
                 child: TextField(
                   decoration: InputDecoration(

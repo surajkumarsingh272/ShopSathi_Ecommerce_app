@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/mobile_provider.dart';
@@ -153,7 +152,7 @@ class _FirstMobileScreenState extends State<FirstMobileScreen> {
                         SizedBox(height: 8),
                         Text("$product",style: TextStyle(fontWeight: FontWeight.bold)),
                         SizedBox(height: 3),
-                        Text("$price",style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                        Text(price,style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                       ],
                     ),
                   );

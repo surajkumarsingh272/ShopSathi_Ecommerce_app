@@ -145,8 +145,8 @@ class _ChangeDeliveryScreenState extends State<ChangeDeliveryScreen> {
                                   SizedBox(height: 20),
                                   MaterialButton(onPressed: () {Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => PaymentMethodScreen(),),);},
                                     height: 50, minWidth: double.infinity, color: Colors.blueAccent,
-                                    child: Text("Delivery to this Address", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,),),
-                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                    child: Text("Delivery to this Address", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,),)
                                   ),
                                 ],
                               ) : null,

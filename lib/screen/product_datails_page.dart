@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../providers/cart_provider.dart';
 import '../providers/product_details_provider.dart';
 import '../services/product_api.dart';
+import 'auth_screen/login_screen.dart';
+import 'order_review_second_screen.dart';
 
 class ProductDetailsPage extends StatefulWidget {
   final int productId;
@@ -496,12 +500,49 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
       ),
       child: Row(
         children: [
+          // Expanded(
+          //   child: ElevatedButton.icon(
+          //     onPressed: () {},
+          //     icon: const Icon(Icons.shopping_cart_outlined,color: Colors.white,),
+          //     label: const Text("Add to Cart",
+          //         style: TextStyle(fontWeight: FontWeight.w600,color: Colors.white)),
+          //     style: ElevatedButton.styleFrom(
+          //       backgroundColor: Colors.blue.shade700,
+          //       padding: const EdgeInsets.symmetric(vertical: 14),
+          //       shape: RoundedRectangleBorder(
+          //           borderRadius: BorderRadius.circular(10)),
+          //     ),
+          //   ),
+          // ),
           Expanded(
             child: ElevatedButton.icon(
-              onPressed: () {},
-              icon: const Icon(Icons.shopping_cart_outlined),
-              label: const Text("Add to Cart",
-                  style: TextStyle(fontWeight: FontWeight.w600)),
+              onPressed: () async {
+                final prefs = await SharedPreferences.getInstance();
+                final userId = prefs.getInt("userId") ?? 0;
+                final productProvider = Provider.of<ProductDetailsProvider>(context, listen: false);
+                final colorList = productProvider.colors;
+                final colorId = (colorList.isNotEmpty && selectedColor < colorList.length) ? colorList[selectedColor].id: null;
+                if (userId == 0) {
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Please login first")), );
+                  Navigator.push(context, MaterialPageRoute(builder: (_) => const LoginScreen()), );
+                  return;
+                }
+                final quantity = 1;
+                Provider.of<CartProvider>(context, listen: false).addToCart(
+                  userId: userId,
+                  productId: widget.productId,
+                  colorId: colorId,
+                  quantity: quantity,
+                );
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text("Added to cart")),
+                );
+              },
+              icon: const Icon(Icons.shopping_cart_outlined, color: Colors.white),
+              label: const Text(
+                "Add to Cart",
+                style: TextStyle(fontWeight: FontWeight.w600, color: Colors.white),
+              ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue.shade700,
                 padding: const EdgeInsets.symmetric(vertical: 14),
@@ -510,13 +551,19 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
               ),
             ),
           ),
+
+
           const SizedBox(width: 12),
           Expanded(
             child: ElevatedButton.icon(
-              onPressed: () {},
-              icon: const Icon(Icons.flash_on),
+              onPressed: () {
+                final productProvider = Provider.of<ProductDetailsProvider>(context, listen: false);
+                final product = productProvider.product;
+                Navigator.push(context, MaterialPageRoute(builder: (context) => OrderReviewSecondScreen(product: product!,),));
+              },
+              icon: const Icon(Icons.flash_on,color: Colors.white,),
               label: const Text("Buy Now",
-                  style: TextStyle(fontWeight: FontWeight.w600)),
+                  style: TextStyle(fontWeight: FontWeight.w600,color: Colors.white)),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.orange.shade700,
                 padding: const EdgeInsets.symmetric(vertical: 14),
