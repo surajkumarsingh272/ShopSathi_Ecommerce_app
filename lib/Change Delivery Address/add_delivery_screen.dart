@@ -10,7 +10,6 @@ class AddDeliveryScreen extends StatelessWidget {
     final provider = Provider.of<AddressProvider>(context);
     final formKey = GlobalKey<FormState>();
     final isEdit = provider.editingId != null;
-
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(

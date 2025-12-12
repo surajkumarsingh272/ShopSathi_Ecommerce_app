@@ -5,7 +5,7 @@ import '../../models/order_model.dart';
 import '../../models/order_tracking_model.dart';
 
 class OrderApi {
-  static const String baseUrl = "https://shop-sathi-api.onrender.com";
+  static const String baseUrl = "http://10.170.190.64:3000";
   static Future<List<OrderModel>> fetchOrders(String token) async {
     final url = Uri.parse("$baseUrl/api/orders");
     final response = await http.get(url, headers: {

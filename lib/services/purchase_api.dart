@@ -4,7 +4,7 @@ import '../models/purchase_history_modal.dart';
 
 
 class PurchaseApi {
-  static const String baseUrl = "https://shop-sathi-api.onrender.com";
+  static const String baseUrl = "http://10.170.190.64:3000";
   static Future<List<PurchaseHistoryModel>> fetchPurchaseHistory(String userId) async {
     try {
       final response = await http.get(Uri.parse("$baseUrl/history/$userId"));

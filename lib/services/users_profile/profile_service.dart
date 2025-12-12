@@ -5,7 +5,7 @@ import '../../models/profile_modal/user_modal.dart';
 
 class ProfileApi {
   // static const String baseUrl = "https://shop-sathi-api.onrender.com";
-  static const String baseUrl = "https://shop-sathi-api.onrender.com";
+  static const String baseUrl = "http://10.170.190.64:3000";
 
   static Future<UserModel?> getProfile(String token) async {
     final response = await http.get(

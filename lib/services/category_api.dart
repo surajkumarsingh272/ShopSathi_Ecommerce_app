@@ -4,8 +4,7 @@ import '../models/banner_modal.dart';
 import '../models/product_model.dart';
 
 class CategoryApi {
-  static const String baseUrl = "https://shop-sathi-api.onrender.com";
-
+  static const String baseUrl = "http://10.170.190.64:3000";
   // Top products
   static Future<List<ProductModel>> fetchTopProducts() async {
     final response = await http.get(Uri.parse("$baseUrl/top-products"));

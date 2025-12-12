@@ -13,7 +13,7 @@ import '../models/search_models/recent_search_model.dart';
 
 class ProductApi {
   // static const String url = "https://shop-sathi-api.onrender.com";
-  static const String url = "https://shop-sathi-api.onrender.com";
+  static const String url = "http://10.170.190.64:3000";
   static Future<List<ProductModel>?> fetchProducts()async{
       var response=await http.get(Uri.parse("$url/home-products"));
       if(response.statusCode==200){

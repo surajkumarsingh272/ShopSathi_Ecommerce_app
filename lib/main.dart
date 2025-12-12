@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shop_sathi_app/Change%20Delivery%20Address/provider_class.dart';
 import 'package:shop_sathi_app/providers/address_provider.dart';
 import 'package:shop_sathi_app/providers/cart_provider.dart';
 import 'package:shop_sathi_app/providers/category_provider.dart';
@@ -24,7 +23,6 @@ void main() {
         ChangeNotifierProvider(create: (_) => ProductDetailsProvider()),
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (context) => MobileProvider(),),
-        ChangeNotifierProvider(create: (context) => ProviderClass(),),
         ChangeNotifierProvider(create: (context) => SearchProvider(),),
         ChangeNotifierProvider(create: (context) => ProfileProvider(),),
         ChangeNotifierProvider(create: (context) => OrderProvider(),),

@@ -10,7 +10,7 @@ import '../models/auth_modal/reset_password_modal.dart';
 
 class AuthApi {
   // static const String baseUrl = "https://shop-sathi-api.onrender.com";
-  static const String baseUrl = "https://shop-sathi-api.onrender.com";
+  static const String baseUrl = "http://10.170.190.64:3000";
   // static Future<RegisterModel?> register(Map<String, dynamic> userData) async {
   //   final response = await http.post( Uri.parse('$baseUrl/register'),body: jsonEncode(userData), headers:{"Content-Type": "application/json"},);
   //   var responseBody = response.body;

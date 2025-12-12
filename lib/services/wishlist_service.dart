@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import '../models/wishlist_item.dart';
 
 class WishlistService {
-  static const String baseUrl = "https://shop-sathi-api.onrender.com";
+  static const String baseUrl = "http://10.170.190.64:3000";
   static Future<List<WishlistItem>> fetchWishlist(int userId, String token) async {
     try {
       final res = await http.get(
