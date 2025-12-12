@@ -84,6 +84,8 @@ class ProviderClass with ChangeNotifier {
       await getAddressData();
       notifyListeners();
 
+      Navigator.pop(context);
+
       nameController.clear();
       lastNameController.clear();
       addressController.clear();
@@ -127,5 +129,20 @@ class ProviderClass with ChangeNotifier {
     notifyListeners();
   }
 
+  Future<bool> deleteAddress(BuildContext context, int id) async {
+    bool success = await AddressApiService.deleteAddressApiData(id);
+
+    if (success) {
+      await getAddressData();
+      selectedIndex = null;
+      notifyListeners();
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Address Deleted Successfully",style: TextStyle(color: Colors.white),),backgroundColor: Colors.green,),);
+      return true;
+    }
+    else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Failed to delete address")),);
+      return false;
+    }
+  }
 
 }

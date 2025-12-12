@@ -137,13 +137,26 @@ class _ChangeDeliveryScreenState extends State<ChangeDeliveryScreen> {
                                         Text("${address.contactNo}"),
                                         Text("House No:${address.houseNo}"),
                                         SizedBox(height: 10),
-                                        GestureDetector(
-                                          child: Text("Edit", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.blueAccent,),
-                                          ),
-                                          onTap: () {
-                                            provider.setSelectedAddress(index);
-                                            Navigator.push(context, MaterialPageRoute(builder: (context) => AddDeliveryScreen(),),);
-                                          },
+                                        Row(
+                                          children: [
+                                            GestureDetector(
+                                              child: Text("Edit", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.blueAccent,),
+                                              ),
+                                              onTap: () {
+                                                provider.setSelectedAddress(index);
+                                                Navigator.push(context, MaterialPageRoute(builder: (context) => AddDeliveryScreen(),),);
+                                              },
+                                            ),
+                                            Padding(
+                                              padding: EdgeInsets.only(left: 20),
+                                              child: GestureDetector(
+                                                  child: Text("Delete",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15,color: Colors.blueAccent),),
+                                                onTap: () {
+                                                  provider.deleteAddress(context, address.id);
+                                                },
+                                              ),
+                                            )
+                                          ],
                                         ),
 
                                         SizedBox(height: 20),
@@ -192,10 +205,7 @@ class _ChangeDeliveryScreenState extends State<ChangeDeliveryScreen> {
         backgroundColor: Colors.blueAccent,
         child: Icon(Icons.add, color: Colors.white),
         onPressed: () async {
-          await Navigator.push(
-            context,
-            MaterialPageRoute(builder: (_) => AddDeliveryScreen()),
-          );
+          await Navigator.push(context, MaterialPageRoute(builder: (_) => AddDeliveryScreen()),);
 
           // Refresh the address list after returning
           final provider = Provider.of<ProviderClass>(context, listen: false);

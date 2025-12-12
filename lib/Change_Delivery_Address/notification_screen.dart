@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shop_sathi_app/Change_Delivery_Address/notification_provider.dart';
 
 import 'notification_list.dart';
 class NotificationScreen extends StatefulWidget {
@@ -10,7 +12,14 @@ class NotificationScreen extends StatefulWidget {
 
 class _NotificationScreenState extends State<NotificationScreen> {
   @override
+  void initState() {
+    super.initState();
+    final notificationProvider = Provider.of<NotificationProvider>(context, listen: false);
+    notificationProvider.getAllNotificationData();
+  }
+  @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<NotificationProvider>(context);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -65,13 +74,13 @@ class _NotificationScreenState extends State<NotificationScreen> {
           ),
           SliverList(
             delegate: SliverChildBuilderDelegate((context, index) {
-                final item = notificationList[index];
+                final notification = provider.notificationList[index];
                 List<Widget> widgets = [];
                 if (index == 0) {
                   widgets.add(
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      child: Text("Today", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold,),),
+                      child: Text(notification.dayStatus, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold,),),
                     ),
                   );
                 }
@@ -79,7 +88,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   widgets.add(
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16,),
-                      child: Text("Yesterday", style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold,),),
+                      child: Text(notification.dayStatus, style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold,),),
                     ),
                   );
                 }
@@ -99,24 +108,24 @@ class _NotificationScreenState extends State<NotificationScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(item["title"]!, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold,),),
+                              Text(notification.title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold,),),
                               SizedBox(height: 4),
 
                               Row(
                                 children: [
                                   Expanded(
-                                    child: Text(item["message"]!, style: const TextStyle(fontSize: 12, color: Colors.black54, fontWeight: FontWeight.bold,)),
+                                    child: Text(notification.subtitle, style: const TextStyle(fontSize: 12, color: Colors.black54, fontWeight: FontWeight.bold,)),
                                   ),
                                   Icon(Icons.circle, size: 10, color: Colors.red),
                                 ],
                               ),
 
-                              const SizedBox(height: 6),
+                              SizedBox(height: 6),
 
                               Align(
                                 alignment: Alignment.centerRight,
                                 child: Text(
-                                  item["time"]!,
+                                  notification.createdAt,
                                   style: const TextStyle(
                                     fontSize: 12,
                                     color: Colors.grey,
@@ -136,7 +145,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   children: widgets,
                 );
               },
-              childCount: notificationList.length,
+              childCount: provider.notificationList.length,
             ),
           )
 

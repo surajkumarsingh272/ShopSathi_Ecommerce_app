@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_sathi_app/Change_Delivery_Address/notification_provider.dart';
+import 'package:shop_sathi_app/Change_Delivery_Address/notification_screen.dart';
+import 'package:shop_sathi_app/Change_Delivery_Address/success_provider.dart';
+import 'package:shop_sathi_app/Change_Delivery_Address/success_screen.dart';
 import 'package:shop_sathi_app/providers/mobile_provider.dart';
 import 'package:shop_sathi_app/providers/product_details_provider.dart';
 import 'package:shop_sathi_app/providers/product_provider.dart';
@@ -21,6 +25,8 @@ void main() {
         ChangeNotifierProvider(create: (context) => MobileProvider(),),
         ChangeNotifierProvider(create: (context) => ProviderClass(),),
         ChangeNotifierProvider(create: (context) => SearchProvider(),),
+        ChangeNotifierProvider(create: (context) => SuccessProvider(),),
+        ChangeNotifierProvider(create: (context) => NotificationProvider(),)
       ],
       child:MyApp(),
     ),
@@ -34,7 +40,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
-        home:ChangeDeliveryScreen(),
+        home:NotificationScreen(),
     );
   }
 }
