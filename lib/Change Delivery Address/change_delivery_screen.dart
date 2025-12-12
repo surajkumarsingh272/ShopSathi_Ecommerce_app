@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/address_provider.dart';
 import 'add_delivery_screen.dart';
-import 'payment_screen.dart';
 
 class ChangeDeliveryScreen extends StatefulWidget {
   const ChangeDeliveryScreen({super.key});
@@ -181,10 +180,10 @@ class _ChangeDeliveryScreenState extends State<ChangeDeliveryScreen> {
                                 const SizedBox(height: 20),
                                 MaterialButton(
                                   onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(builder: (_) => const PaymentMethodScreen()),
-                                    );
+                                    // Navigator.push(
+                                    //   context,
+                                    //   MaterialPageRoute(builder: (_) => const PaymentMethodScreen()),
+                                    // );
                                   },
                                   height: 50,
                                   minWidth: double.infinity,
