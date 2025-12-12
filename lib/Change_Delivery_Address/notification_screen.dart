@@ -31,6 +31,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 child: Icon(Icons.arrow_back,color: Colors.black,)),
           ),
         ),
+
           centerTitle: true,
           title: Text("Notification",style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),),
         actions: [
