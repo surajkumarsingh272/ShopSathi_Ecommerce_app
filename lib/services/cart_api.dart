@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import '../models/cart_model.dart';
 
 class CartApi {
-  static const String baseUrl = "http://10.170.190.64:3000";
+  static const String baseUrl = "https://shop-sathi-api.onrender.com";
 
   static Future<bool> addToCart({
     required int userId,

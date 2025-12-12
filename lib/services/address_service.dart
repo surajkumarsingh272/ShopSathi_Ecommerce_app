@@ -5,7 +5,7 @@ import '../models/address_model.dart';
 class AddressService {
   // static const String baseUrl = "https://shop-sathi-api.onrender.com";
   // Add Address
-  static const String baseUrl = "http://10.170.190.64:3000";
+  static const String baseUrl = "https://shop-sathi-api.onrender.com";
 
   static Future<bool> addAddress(Map<String, dynamic> data) async {
     final url = Uri.parse("$baseUrl/address/add");
